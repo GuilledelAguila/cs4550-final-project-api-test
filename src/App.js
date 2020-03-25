@@ -1,11 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import NewsComponent from "./components/newsComponent";
+import EventsComponent from "./components/eventsComponent";
 
 const App = () =>
     <div>
-        <NewsComponent/>
+        <EventsComponent/>
     </div>
 
 

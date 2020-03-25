@@ -7,12 +7,25 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(pino);
 
-app.get('/api/greeting', (req, res) => {
-    const name = req.query.name || 'World';
+app.get('/api/event/search', (req, res) => {
+    const location = req.query.location || 'USA';
     res.setHeader('Content-Type', 'application/json');
-    //res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
     request(
-        { url: 'http://api.eventful.com/json/events/search?app_key=V8w6JvwNxm4VCX5H&keywords=books&location=San+Diego' },
+        { url: `http://api.eventful.com/json/events/search?app_key=V8w6JvwNxm4VCX5H&location=${location}` },
+        (error, response, body) => {
+            if (error || response.statusCode !== 200) {
+                return res.status(500).json({ type: 'error', message: error.message });
+            }
+            res.json(JSON.parse(body));
+        }
+    )
+});
+
+app.get('/api/searchbyid', (req, res) => {
+    const id = req.query.id || 'USA';
+    res.setHeader('Content-Type', 'application/json');
+    request(
+        { url: `http://api.eventful.com/json/events/get?app_key=V8w6JvwNxm4VCX5H&id=${id}` },
         (error, response, body) => {
             if (error || response.statusCode !== 200) {
                 return res.status(500).json({ type: 'error', message: error.message });
